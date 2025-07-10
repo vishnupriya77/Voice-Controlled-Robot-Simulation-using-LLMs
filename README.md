@@ -1,52 +1,73 @@
-# reachy2021-unity-package
+# Voice-Controlled Robot Simulation using LLMs 🤖🎙️
 
 |   License     |     |
 | ------------- | :-------------: |
-| Title  | [Creatives Commons BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode) |
-| Logo  | [![Creative Commons BY-NC-SA 4.0](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png) ](http://creativecommons.org/licenses/by-nc-sa/4.0/)  |
+| Title  | [Creative Commons BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode) |
+| Logo  | [![Creative Commons BY-NC-SA 4.0](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png)](http://creativecommons.org/licenses/by-nc-sa/4.0/) |
 
-Reachy simulator based on Unity 2021. It allows to simply play around with our SDK or the teleoperation app.
+This project demonstrates a fully working **voice-controlled robot simulation** using the [Reachy 2021 Unity simulator](https://github.com/pollen-robotics Simulator_Reachy2021), integrated with **LLMs (Large Language Models)** for natural language command processing.
 
-## Quick start
+---
 
-Download the zip archive from the [release page](https://github.com/pollen-robotics/Simulator_Reachy2021/releases), and unzip it on a Windows computer. Simply run *Simulator.exe*. The simulator is ready [to be used](#use-your-simulator)!
+## 📦 What This Project Does
+
+- Loads the Reachy Mini simulation inside Unity
+- Enables simple motion commands when you press keys (R-raise right arm, S-shake head, W-wave, L-raise left hand, H-rotate head)
+- Accepts **text or voice input**
+- Sends that input to a **LLM (via OpenRouter API)**
+- Receives a structured response (e.g., `{ "action": "wave" }`)
+- Executes corresponding motion in Unity
+
+---
+
+## 🔧 Tools Used
+
+- Unity 2021.3.45f1
+- Reachy 2021 Simulator by Pollen Robotics
+- C# scripts
+- OpenRouter API for LLMs (Mistral 7B)
+- MiniJSON to parse flexible LLM response objects
+- Windows DictationRecognizer for voice input
+- Git & GitHub for version control
+
+---
+
+## 🏗️ System Architecture
 
 
-## Install the simulator to your Unity project
+User Input (Text/Voice)
+        ↓
+HuggingFaceChat.cs
+        ↓
+Send Prompt to LLM (OpenRouter)
+        ↓
+Receive JSON Action (e.g., {"action": "wave"})
+        ↓
+Trigger ReachyMotionTest.cs → Unity Animations
 
-1. Download the Unity package available on the [release page](https://github.com/pollen-robotics/Simulator_Reachy2021/releases), or add
-```
-https://github.com/pollen-robotics/reachy2021-unity-package.git?path=/Packages/ReachySimulator#master
-```
 
-to the Package Manager (add package from git URL).
+- `ReachyMotionTest.cs`: contains coroutine-based motions for Reachy
+- `HuggingFaceChat.cs`: handles API request, parses LLM response, and triggers motion
+- Dictation input via a mic button is linked to Unity’s UI using `DictationRecognizer`
 
-2. Download the [grpc_unity_package](https://packages.grpc.io/archive/2022/04/67538122780f8a081c774b66884289335c290cbe-f15a2c1c-582b-4c51-acf2-ab6d711d2c59/csharp/grpc_unity_package.2.47.0-dev202204190851.zip) from the [gRPC daily builds](https://packages.grpc.io/archive/2022/04/67538122780f8a081c774b66884289335c290cbe-f15a2c1c-582b-4c51-acf2-ab6d711d2c59/index.xml). Unzip it in the **Assets** folder. It can be done automatically from the menu "Pollen Robotics/Install GRPC". You may want to restart Unity if the menu is not visible after installing the package.
+---
 
-## Create your own simulator
+## 🚀 How to Run
 
-1. Create a new 3D Unity project (or open an existing one).
-2. Follow the previous installation steps to add the package to your project.
-3. Drag and drop Reachy and the Server from the Prefabs folder into your scene.
-4. Then click Play and start controlling the robot.
+1. **Clone the repo**  
 
-You can create your own scene and environment for Reachy to evolve in!
+2. **Open in Unity**  
+   Open the project in Unity 2021.3.45f1 or higher (LTS preferred).
 
-## Use your simulator
+3. **Open OfficeScene** from the `Assets` folder and press Play.
 
-The Unity simulator is only offering the gRPC services of the robot, not the below ROS2 services.  
-For this reason, the simulator is compatible with:
-- [Reachy 2021 Python SDK](https://docs.pollen-robotics.com/sdk/getting-started/introduction/): 
-connect to the simulated robot with the usual command:
+4. **Enter text** in the input field and click Submit, *or* press the **Mic button** to speak your command (e.g., “rotate your head”).
 
-```
-from reachy_sdk import ReachySDK
+5. The LLM interprets the input and drives the robot action in Unity.
 
-reachy = ReachySDK(host='localhost') # Replace with the actual IP
-``` 
-**Use the SDK version 0.5.4**. Later versions are for Reachy 2023. ``` pip install reachy-sdk==0.5.4```
+---
 
-- VR teleoperation app
-- Any gRPC client you may create, based on [reachy-sdk-api](https://github.com/pollen-robotics/reachy-sdk-api)
+## 🔮 Future Enhancements
 
-Check out our [Medium article](https://medium.com/pollen-robotics/controlling-a-reachy-robot-in-unity-f3d90d550345) to see the python SDK in action!
+- Enable the robot to understand and perform combined or complex actions (e.g., wave and say hello).
+- Integrate text-to-speech so the robot can verbally respond instead of just displaying text.
