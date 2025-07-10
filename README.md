@@ -34,7 +34,7 @@ This project demonstrates a fully working **voice-controlled robot simulation** 
 
 ## 🏗️ System Architecture
 
-
+```
 User Input (Text/Voice)
         ↓
 HuggingFaceChat.cs
@@ -44,7 +44,7 @@ Send Prompt to LLM (OpenRouter)
 Receive JSON Action (e.g., {"action": "wave"})
         ↓
 Trigger ReachyMotionTest.cs → Unity Animations
-
+```
 
 - `ReachyMotionTest.cs`: contains coroutine-based motions for Reachy
 - `HuggingFaceChat.cs`: handles API request, parses LLM response, and triggers motion
